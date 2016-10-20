@@ -1,0 +1,4 @@
+Page:
+  resource: "@BloggerBlogBundle/Controller/PageController.php"
+  type:     annotation
+  prefix:   /
