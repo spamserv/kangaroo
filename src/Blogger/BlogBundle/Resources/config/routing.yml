@@ -3,7 +3,12 @@ Page:
   type:     annotation
   prefix:   /
 
-Page:
+Blog:
   resource: "@BloggerBlogBundle/Controller/BlogController.php"
   type:     annotation
   prefix:   /blog
+
+Comment:
+  resource: "@BloggerBlogBundle/Controller/CommentController.php"
+  type:     annotation
+  prefix:   /comment

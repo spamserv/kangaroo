@@ -21,9 +21,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class BlogController extends Controller
 {
 
-
     /**
-    * @Route("/{id}", name="homepage")
+    * @Route("/{id}", name="blog_show", requirements={"id": "\d+"})
     * @Method("GET")
     */
     public function showAction($id)
@@ -31,6 +30,9 @@ class BlogController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $blog = $em->getRepository('BloggerBlogBundle:Blog')->find($id);
+        $comments = $em->getRepository('BloggerBlogBundle:Comment')
+                    ->getCommentsForBlog($blog->getId());
+
 
         if (!$blog) {
             throw $this->createNotFoundException('Unable to find Blog post.');
@@ -38,6 +40,7 @@ class BlogController extends Controller
 
         return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
             'blog'      => $blog,
+            'comments'  => $comments,
         ));
     }
 }

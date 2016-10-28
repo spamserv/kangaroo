@@ -60,12 +60,6 @@ class Blog
     private $tags;
 
     /**
-     * @var string
-     *
-     */
-    private $comments;
-
-    /**
      * @var datetime
      *
      * @ORM\Column(name="created", type="datetime")
