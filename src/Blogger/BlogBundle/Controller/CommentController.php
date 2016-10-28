@@ -6,6 +6,10 @@ namespace Blogger\BlogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Blogger\BlogBundle\Entity\Comment;
 use Blogger\BlogBundle\Form\CommentType;
+use Symfony\Component\HttpFoundation\Request;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * Comment controller.
@@ -18,7 +22,7 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $comment->setBlog($blog);
-        $form   = $this->createForm(new CommentType(), $comment);
+        $form   = $this->createForm(CommentType::class, $comment);
 
         return $this->render('BloggerBlogBundle:Comment:form.html.twig', array(
             'comment' => $comment,
@@ -30,20 +34,23 @@ class CommentController extends Controller
     * @Route("/{blog_id}", name="comment_create", requirements={"blog_id": "\d+"})
     * @Method("POST")
     */
-    public function createAction($blog_id)
+    public function createAction(Request $request, $blog_id)
     {
+        $em = $this->getDoctrine()
+                    ->getManager();
+
         $blog = $this->getBlog($blog_id);
 
         $comment  = new Comment();
         $comment->setBlog($blog);
-        $request = $this->getRequest();
-        $form    = $this->createForm(new CommentType(), $comment);
-        $form->bindRequest($request);
+        $form    = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             // TODO: Persist the comment entity
-
-            return $this->redirect($this->generateUrl('BloggerBlogBundle_blog_show', array(
+            $em->persist($comment);
+            $em->flush();
+            return $this->redirect($this->generateUrl('blog_show', array(
                 'id' => $comment->getBlog()->getId())) .
                 '#comment-' . $comment->getId()
             );
@@ -58,7 +65,7 @@ class CommentController extends Controller
     protected function getBlog($blog_id)
     {
         $em = $this->getDoctrine()
-                    ->getEntityManager();
+                    ->getManager();
 
         $blog = $em->getRepository('BloggerBlogBundle:Blog')->find($blog_id);
 
