@@ -9,9 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="blog")
  * @ORM\Entity(repositoryClass="Blogger\BlogBundle\Repository\BlogRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Blog
 {
+
     /**
      * @var int
      *
@@ -76,6 +78,19 @@ class Blog
      */
     private $updated;
 
+    public function __construct()
+    {
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedValue()
+    {
+       $this->setUpdated(new \DateTime());
+    }
 
     /**
      * Get id
@@ -154,9 +169,12 @@ class Blog
      *
      * @return text
      */
-    public function getBlog()
+    public function getBlog($length = null)
     {
-        return $this->blog;
+        if (false === is_null($length) && $length > 0)
+            return substr($this->blog, 0, $length);
+        else
+            return $this->blog;
     }
 
     /**

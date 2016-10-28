@@ -2,3 +2,8 @@ Page:
   resource: "@BloggerBlogBundle/Controller/PageController.php"
   type:     annotation
   prefix:   /
+
+Page:
+  resource: "@BloggerBlogBundle/Controller/BlogController.php"
+  type:     annotation
+  prefix:   /blog
