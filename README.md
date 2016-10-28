@@ -58,6 +58,11 @@ released under the MIT or BSD license.
 
 Enjoy!
 
+________________________________________________________________
+** 29.10.2016. UPDATE **
+I will upload the project on heroku when I finish register/login form + basic design.
+
+
 [1]:  https://symfony.com/doc/3.0/book/installation.html
 [6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
 [7]:  https://symfony.com/doc/3.0/book/doctrine.html
