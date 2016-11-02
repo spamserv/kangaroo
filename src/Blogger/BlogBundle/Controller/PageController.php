@@ -73,7 +73,7 @@ class PageController extends Controller
 
 		        // Redirect - This is important to prevent users re-posting
 		        // the form if they refresh the page
-		        return $this->redirect($this->generateUrl('BloggerBlogBundle_contact'));
+		        return $this->redirect($this->generateUrl('contact'));
 		    }
 	    }
 
@@ -81,6 +81,22 @@ class PageController extends Controller
 	        'form' => $form->createView()
 	    ));
  	}
+
+    public function sidebarAction()
+    {
+        $em = $this->getDoctrine()
+                   ->getEntityManager();
+
+        $tags = $em->getRepository('BloggerBlogBundle:Blog')
+                   ->getTags();
+
+        $tagWeights = $em->getRepository('BloggerBlogBundle:Blog')
+                         ->getTagWeights($tags);
+
+        return $this->render('BloggerBlogBundle:Page:sidebar.html.twig', array(
+            'tags' => $tagWeights
+        ));
+    }
 
     /**
      * @Route("/load/blogs", name="load_blogs")
